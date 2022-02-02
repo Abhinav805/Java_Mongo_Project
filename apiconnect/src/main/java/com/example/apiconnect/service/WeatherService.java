@@ -2,10 +2,17 @@ package com.example.apiconnect.service;
 
 import com.example.apiconnect.model.Users;
 import com.example.apiconnect.repository.WeatherRepository;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.mongodb.client.MongoCursor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,12 +37,46 @@ public class WeatherService {
 
     // Method 2
     // Get one user by Id
-    public Users findUserById(String id)
+   /* public Users findUserById(String id)
     {
+        System.out.println("I am inside Findby ID method ");
+
+
         return weatherRepository.findById(id).
                 orElseThrow(()-> new RuntimeException(
                         String.format("Cannot find User by id %s", id)
                 ));
+    }*/
+
+
+    // Method 2
+    // Get one user by Id
+    public List<Document> findUserById(int user_id)
+    {
+
+        List<Document> list = new ArrayList<>();
+        System.out.println("I am inside Findby ID method ");
+        MongoClient client = MongoClients.create("mongodb://localhost:27017/weather");
+        MongoDatabase db = client.getDatabase("weather");
+        MongoCollection collection = db.getCollection("users");
+
+//        db.getCollection("users").find("userId:");
+
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("user_id",user_id);
+
+        MongoCursor cursor  = collection.find(whereQuery).iterator();
+        while(cursor.hasNext()) {
+            System.out.println(cursor);
+                list.add((Document) cursor.next());
+        }
+
+        return list;
+
+     /*   return weatherRepository.findById(user_id).
+                orElseThrow(()-> new RuntimeException(
+                        String.format("Cannot find User by id %s", user_id)
+                ));*/
     }
 
     // Method 3

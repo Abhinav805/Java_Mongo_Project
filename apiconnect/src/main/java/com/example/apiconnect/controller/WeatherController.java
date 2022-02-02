@@ -3,6 +3,7 @@ package com.example.apiconnect.controller;
 import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.apiconnect.model.Users;
 import com.example.apiconnect.service.WeatherService;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -55,11 +56,31 @@ public class WeatherController
 
     // Method 2
     // Get one user by Id
-    @GetMapping("/data/{id}")
+   /* @GetMapping("/data/{id}")
     public ResponseEntity findUserById(@PathVariable String id)
     {
      return ResponseEntity.ok(weatherService.findUserById(id));
-    }
+    }*/
+
+  /*@GetMapping("/data/{user_id}")
+  public ResponseEntity findUserById(@PathVariable int user_id)
+  {
+ *//*   BasicDBObject whereQuery = new BasicDbObject();
+    whereQuery.put("user_id",user)*//*
+
+
+    return ResponseEntity.ok(weatherService.findUserById(user_id));
+  }*/
+
+  @GetMapping("/data/{user_id}")
+  public List<Document> findUserById(@PathVariable int user_id)
+  {
+ /*   BasicDBObject whereQuery = new BasicDbObject();
+    whereQuery.put("user_id",user)*/
+
+
+    return weatherService.findUserById(user_id);
+  }
 
 
     // Method 3
@@ -71,6 +92,7 @@ public class WeatherController
       System.out.println("I am here");
       Users user = new Users();
         user.setJsObj(jsObj);
+        user.setUserId((int)jsObj.get("user_id"));
         weatherService.addNewUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

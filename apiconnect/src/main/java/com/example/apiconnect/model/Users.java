@@ -37,8 +37,20 @@ public class Users {
     @JsonIgnoreProperties
     private String id;
     private JSONObject jsObj;
+    private int user_id;
 
-    private  Map<String, Object> map;
+
+    //Set
+    public void setUserId(int user_id)
+    {
+        this.user_id = user_id;
+    }
+    //Get
+    public int getUserId()
+    {
+        return user_id;
+    }
+
     //Set
     public void setId(String id)
     {

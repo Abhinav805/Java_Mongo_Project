@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public interface WeatherRepository extends MongoRepository<Users,String>{
    // List<Users> findAllUsers();
+    
 
-    @Query("{'id':?0}")
-    Optional<Users> findById(String id);
 }
